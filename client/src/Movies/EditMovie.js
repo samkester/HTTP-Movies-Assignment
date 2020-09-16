@@ -6,7 +6,7 @@ const newMovie = {
     title: "",
     director: "",
     metascore: "",
-    stars: ["Joe Bloggs"],
+    stars: [],
 }
 
 const EditMovie = ({movieList, setMovieList}) => {
@@ -48,6 +48,19 @@ const EditMovie = ({movieList, setMovieList}) => {
         setMovie({...movie, [name]: value});
     }
 
+    const handleStarsChange = event => {
+        //console.log(event.target.value)
+        //console.log(event.target.value.split("\n"))
+        
+        // the Actors textarea joins the actors array using newlines between elements
+        // [a, b, c] -> "a\nb\nc", which displays as:
+        //      a
+        //      b
+        //      c
+        // therefore, when writing the value back into the array, we should separate by "\n"
+        setMovie({...movie, [event.target.name]: event.target.value.split("\n")});
+    }
+
     const handleSubmit = event => {
         event.preventDefault();
 
@@ -56,19 +69,20 @@ const EditMovie = ({movieList, setMovieList}) => {
         if(id){
             Axios.put(`http://localhost:5000/api/movies/${id}`, movie)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 filterIntoMovieList(response.data);
                 history.push(`/movies/${id}`);
             })
-            .catch(error => console.log(error));    
+            .catch(error => console.log(error));
         }
         else {
             Axios.post("http://localhost:5000/api/movies", movie)
             .then(response => {
-                console.log(response);
+                //console.log(response);
                 setMovieList(response.data);
                 history.push(`/movies/${response.data[response.data.length-1].id}`);
             })
+            .catch(error => console.log(error));
         }
     }
 
@@ -95,16 +109,11 @@ const EditMovie = ({movieList, setMovieList}) => {
                 Metascore
                 <input type="text" name="metascore" value={movie.metascore} onChange={handleChange} />
             </label>
-            <h3>Actors</h3>
-
-            {movie.stars.map(star => (
-                <div key={star} className="movie-star">
-                {star}
-                </div>
-            ))}
-
-            <br />
-
+            <label className="extra-space">
+                <div className="large">Actors</div>
+                <div>Enter one actor per line.</div>
+                <textarea name="stars" value={movie.stars.join("\n")} onChange={handleStarsChange} />
+            </label>
             <button className="home-button">Save</button>
         </form>
     )

@@ -94,3 +94,13 @@ input{
   color: red;
   text-align: center;
 }
+
+.extra-space{
+  display: block;
+  margin: 2em 0em;
+}
+
+textarea{
+  min-width: 30em;
+  min-height: 6em;
+}
