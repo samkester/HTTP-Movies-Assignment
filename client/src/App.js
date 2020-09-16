@@ -4,6 +4,7 @@ import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
 import axios from 'axios';
+import EditMovie from "./Movies/EditMovie";
 
 const App = () => {
   const [savedList, setSavedList] = useState([]);
@@ -20,6 +21,17 @@ const App = () => {
     setSavedList([...savedList, movie]);
   };
 
+  const removeFromLists = id => {
+    // remove the given ID from the movieList AND savedList, if it's there
+    // (we don't want old references to deleted movies; they might return bad data)
+    setMovieList(
+      movieList.filter(item => item.id !== id)
+    );
+    setSavedList(
+      savedList.filter(item => item.id !== id)
+    );
+  }
+    
   useEffect(() => {
     getMovieList();
   }, []);
@@ -33,7 +45,15 @@ const App = () => {
       </Route>
 
       <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
+        <Movie addToSavedList={addToSavedList} removeFromLists={removeFromLists} />
+      </Route>
+
+      <Route path="/update-movie/:id">
+        <EditMovie movieList={movieList} setMovieList={setMovieList} />
+      </Route>
+
+      <Route path="/add-movie">
+        <EditMovie movieList={movieList} setMovieList={setMovieList} />
       </Route>
     </>
   );

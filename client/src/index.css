@@ -11,9 +11,17 @@ body {
   box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
     0 2px 4px rgba(0, 0, 0, 0.24);
   padding: 1rem;
-  cursor: pointer;
   position: relative;
   margin: 1rem auto;
+}
+
+input{
+  display: block;
+}
+
+.large{
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .movie-director {
@@ -60,18 +68,39 @@ body {
   border: 1px solid grey;
   padding: 5px 10px;
   background-color: lightseagreen;
+  cursor: pointer;
 }
 .save-button:hover {
   background-color: green;
   color: white;
 }
 
+.save-button.two{
+  top: 60px;
+}
+
+.save-button.three{
+  top: 95px;
+}
+
 .home-button {
   padding: 5px 10px;
   background-color: lightskyblue;
+  border: none;
+  text-decoration: underline;
 }
 
 .movie-warning {
   color: red;
   text-align: center;
+}
+
+.extra-space{
+  display: block;
+  margin: 2em 0em;
+}
+
+textarea{
+  min-width: 30em;
+  min-height: 6em;
 }
