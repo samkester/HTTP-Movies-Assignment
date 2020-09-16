@@ -1,22 +1,48 @@
+import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const EditMovie = ({movieList, setMovieList}) => {
-    const {id} = useParams();
-
     const [movie, setMovie] = useState();
+    const {id} = useParams();
+    const history = useHistory();
+
     useEffect(() => {
         setMovie(movieList.filter(item => String(item.id) === id)[0]);
     }, [movieList, id])
 
+    const filterIntoMovieList = movie => {
+        setMovieList(
+            movieList.map(item => {
+                if(movie.id === item.id){ // if the item in movieList is the movie we're overwriting,
+                    return movie; // overwrite it with new data
+                }
+                return item; // otherwise, pass it through unchanged
+            })
+        );
+    }
+
     const handleChange = event => {
-        const name = [event.target.name];
-        let value = [event.target.value];
+        const name = event.target.name;
+        let value = event.target.value;
         if(name === "metascore"){
             value = Number(value);
         }
 
         setMovie({...movie, [name]: value});
+    }
+
+    const handleSubmit = event => {
+        event.preventDefault();
+
+        console.log(movie);
+        Axios.put(`http://localhost:5000/api/movies/${id}`, movie)
+        .then(response => {
+            console.log(response);
+            filterIntoMovieList(response.data);
+            history.push(`/movies/${id}`);
+        })
+        .catch(error => console.log(error));
     }
 
     if(!movie)
@@ -27,7 +53,7 @@ const EditMovie = ({movieList, setMovieList}) => {
     }
 
     return (
-        <form className="movie-card">
+        <form className="movie-card" onSubmit={handleSubmit}>
             <label className="large">
                 Title
                 <input type="text" name="title" value={movie.title} onChange={handleChange} />
