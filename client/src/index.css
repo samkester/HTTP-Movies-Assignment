@@ -16,6 +16,15 @@ body {
   margin: 1rem auto;
 }
 
+input{
+  display: block;
+}
+
+.large{
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .movie-director {
   padding: 4px 0;
   font-size: 0.8rem;
@@ -69,6 +78,8 @@ body {
 .home-button {
   padding: 5px 10px;
   background-color: lightskyblue;
+  border: none;
+  text-decoration: underline;
 }
 
 .movie-warning {

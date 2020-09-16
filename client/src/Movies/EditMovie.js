@@ -9,7 +9,15 @@ const EditMovie = ({movieList, setMovieList}) => {
         setMovie(movieList.filter(item => String(item.id) === id)[0]);
     }, [movieList, id])
 
-    //const movie = movieList.filter(item => item.id === id)[0];
+    const handleChange = event => {
+        const name = [event.target.name];
+        let value = [event.target.value];
+        if(name === "metascore"){
+            value = Number(value);
+        }
+
+        setMovie({...movie, [name]: value});
+    }
 
     if(!movie)
     {
@@ -19,14 +27,21 @@ const EditMovie = ({movieList, setMovieList}) => {
     }
 
     return (
-        <div className="movie-card">
-            <h2>{movie.title}</h2>
-            <div className="movie-director">
-                Director: <em>{movie.director}</em>
-            </div>
-            <div className="movie-metascore">
-                Metascore: <strong>{movie.metascore}</strong>
-            </div>
+        <form className="movie-card">
+            <label className="large">
+                Title
+                <input type="text" name="title" value={movie.title} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+                Director
+                <input type="text" name="director" value={movie.director} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+                Metascore
+                <input type="text" name="metascore" value={movie.metascore} onChange={handleChange} />
+            </label>
             <h3>Actors</h3>
 
             {movie.stars.map(star => (
@@ -34,7 +49,11 @@ const EditMovie = ({movieList, setMovieList}) => {
                 {star}
                 </div>
             ))}
-        </div>
+
+            <br />
+
+            <button className="home-button">Push Me</button>
+        </form>
     )
 }
 
